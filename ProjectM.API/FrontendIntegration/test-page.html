@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectM API Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #667eea;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .user-info p {
+            margin: 5px 0;
+        }
+
+        .response-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .config-box {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .config-box strong {
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 ProjectM API Test</h1>
+            <p>JWT Authentication Testing Interface</p>
+        </div>
+
+        <div class="content">
+            <!-- Configuration -->
+            <div class="config-box">
+                <strong>⚙️ API URL:</strong> <span id="apiUrl">https://localhost:7xxx/api</span>
+                <br>
+                <input type="text" id="apiUrlInput" placeholder="Enter your API URL" style="margin-top: 10px;">
+                <button onclick="updateApiUrl()">Update URL</button>
+            </div>
+
+            <!-- Messages -->
+            <div id="messages"></div>
+
+            <!-- Login Section -->
+            <div class="section" id="loginSection">
+                <h2>1. Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" value="admin@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" value="" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+
+            <!-- Logged In Section -->
+            <div class="section hidden" id="loggedInSection">
+                <h2>2. User Info</h2>
+                <div class="user-info" id="userInfo"></div>
+
+                <div style="margin-top: 20px;">
+                    <button onclick="refreshToken()">🔄 Refresh Token</button>
+                    <button onclick="getUserData()" class="btn-warning">👤 Get User Data</button>
+                    <button onclick="logout()">🚪 Logout</button>
+                    <button onclick="logoutAll()" class="btn-danger">🚪🚪 Logout All Devices</button>
+                </div>
+            </div>
+
+            <!-- Response Section -->
+            <div class="section">
+                <h2>3. API Response</h2>
+                <div class="response-box" id="responseBox">
+                    <em>Responses will appear here...</em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let API_BASE_URL = 'https://localhost:7xxx/api';
+        let accessToken = sessionStorage.getItem('accessToken');
+        let currentUser = null;
+
+        // Update API URL
+        function updateApiUrl() {
+            const newUrl = document.getElementById('apiUrlInput').value.trim();
+            if (newUrl) {
+                API_BASE_URL = newUrl.endsWith('/api') ? newUrl : newUrl + '/api';
+                document.getElementById('apiUrl').textContent = API_BASE_URL;
+                showMessage('API URL updated to: ' + API_BASE_URL, 'info');
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            document.getElementById('apiUrlInput').value = API_BASE_URL;
+            if (accessToken) {
+                checkAuth();
+            }
+        };
+
+        // Show message
+        function showMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            const alertClass = type === 'error' ? 'alert-error' : type === 'success' ? 'alert-success' : 'alert-info';
+            messagesDiv.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
+            setTimeout(() => messagesDiv.innerHTML = '', 5000);
+        }
+
+        // Show response
+        function showResponse(data) {
+            document.getElementById('responseBox').textContent = JSON.stringify(data, null, 2);
+        }
+
+        // Handle login
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/login-with-cookie`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
+
+                const data = await response.json();
+                accessToken = data.token;
+                currentUser = data.user;
+
+                sessionStorage.setItem('accessToken', accessToken);
+                sessionStorage.setItem('user', JSON.stringify(currentUser));
+
+                showMessage('✅ Login successful!', 'success');
+                showResponse(data);
+                updateUI(true);
+                displayUserInfo();
+            } catch (error) {
+                showMessage('❌ Login failed: ' + error.message, 'error');
+                showResponse({ error: error.message });
+            }
+        }
+
+        // Refresh token
+        async function refreshToken() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/refresh-token-cookie`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Token refresh failed');
+                }
+
+                const data = await response.json();
+                accessToken = data.token;
+                currentUser = data.user;
+
+                sessionStorage.setItem('accessToken', accessToken);
+                sessionStorage.setItem('user', JSON.stringify(currentUser));
+
+                showMessage('✅ Token refreshed successfully!', 'success');
+                showResponse(data);
+                displayUserInfo();
+            } catch (error) {
+                showMessage('❌ Token refresh failed: ' + error.message, 'error');
+                showResponse({ error: error.message });
+            }
+        }
+
+        // Get user data
+        async function getUserData() {
+            if (!currentUser) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${currentUser.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+
+                const data = await response.json();
+                showMessage('✅ User data fetched successfully!', 'success');
+                showResponse(data);
+            } catch (error) {
+                showMessage('❌ Failed to fetch user data: ' + error.message, 'error');
+                showResponse({ error: error.message });
+            }
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                await fetch(`${API_BASE_URL}/users/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'include'
+                });
+
+                clearAuth();
+                showMessage('✅ Logged out successfully!', 'success');
+                showResponse({ message: 'Logged out' });
+            } catch (error) {
+                clearAuth();
+                showMessage('⚠️ Logged out (with errors)', 'info');
+            }
+        }
+
+        // Logout all devices
+        async function logoutAll() {
+            if (!confirm('This will logout all devices. Continue?')) return;
+
+            try {
+                await fetch(`${API_BASE_URL}/users/logout-all-devices`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'include'
+                });
+
+                clearAuth();
+                showMessage('✅ Logged out from all devices!', 'success');
+                showResponse({ message: 'Logged out from all devices' });
+            } catch (error) {
+                clearAuth();
+                showMessage('⚠️ Logged out (with errors)', 'info');
+            }
+        }
+
+        // Clear auth
+        function clearAuth() {
+            accessToken = null;
+            currentUser = null;
+            sessionStorage.removeItem('accessToken');
+            sessionStorage.removeItem('user');
+            updateUI(false);
+        }
+
+        // Check auth on load
+        function checkAuth() {
+            const userData = sessionStorage.getItem('user');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+                updateUI(true);
+                displayUserInfo();
+            }
+        }
+
+        // Update UI
+        function updateUI(isLoggedIn) {
+            document.getElementById('loginSection').classList.toggle('hidden', isLoggedIn);
+            document.getElementById('loggedInSection').classList.toggle('hidden', !isLoggedIn);
+        }
+
+        // Display user info
+        function displayUserInfo() {
+            if (!currentUser) return;
+
+            document.getElementById('userInfo').innerHTML = `
+                <p><strong>👤 Name:</strong> ${currentUser.name}</p>
+                <p><strong>✉️ Email:</strong> ${currentUser.email}</p>
+                <p><strong>🎭 Role:</strong> ${currentUser.role}</p>
+                <p><strong>🏢 Company:</strong> ${currentUser.company || 'N/A'}</p>
+                <p><strong>🆔 User ID:</strong> ${currentUser.id}</p>
+                <p><strong>✅ Active:</strong> ${currentUser.isActive ? 'Yes' : 'No'}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

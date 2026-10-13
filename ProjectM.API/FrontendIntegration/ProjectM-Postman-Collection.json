@@ -1,0 +1,361 @@
+{
+  "info": {
+    "name": "ProjectM API - Authentication",
+    "description": "Collection for testing ProjectM authentication endpoints with JWT and refresh tokens",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7xxx/api",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login (Cookie-Based)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('accessToken', jsonData.token);",
+                  "    pm.environment.set('userId', jsonData.user.id);",
+                  "    console.log('Access token saved:', jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"YourPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/login-with-cookie",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "login-with-cookie"]
+            },
+            "description": "Login with email and password. Returns access token and sets HTTP-only cookie with refresh token."
+          },
+          "response": []
+        },
+        {
+          "name": "Login (Regular)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('accessToken', jsonData.token);",
+                  "    pm.environment.set('refreshToken', jsonData.refreshToken);",
+                  "    pm.environment.set('userId', jsonData.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"YourPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "login"]
+            },
+            "description": "Login and receive both access token and refresh token in response body."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token (Cookie)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('accessToken', jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/refresh-token-cookie",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "refresh-token-cookie"]
+            },
+            "description": "Refresh access token using refresh token from HTTP-only cookie."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token (Body)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('accessToken', jsonData.token);",
+                  "    pm.environment.set('refreshToken', jsonData.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "refresh-token"]
+            },
+            "description": "Refresh access token using refresh token from request body."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "logout"]
+            },
+            "description": "Logout from current device. Revokes current refresh token."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout All Devices",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/logout-all-devices",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "logout-all-devices"]
+            },
+            "description": "Logout from all devices. Revokes all refresh tokens for the user."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            },
+            "description": "Get user details by ID. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('newUserId', jsonData.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"SecurePassword123!\",\n  \"role\": \"User\",\n  \"company\": \"Example Corp\",\n  \"phone\": \"1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "register"]
+            },
+            "description": "Register a new user account."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"company\": \"New Company\",\n  \"phone\": \"0987654321\",\n  \"isActive\": true,\n  \"role\": \"User\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            },
+            "description": "Update user information. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"CurrentPassword123!\",\n  \"newPassword\": \"NewSecurePassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}", "change-password"]
+            },
+            "description": "Change user password. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Activate User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/activate",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}", "activate"]
+            },
+            "description": "Activate a user account. Requires Admin role."
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}", "deactivate"]
+            },
+            "description": "Deactivate a user account. Requires Admin role."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

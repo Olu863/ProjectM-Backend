@@ -1,0 +1,431 @@
+Using launch settings from C:\Users\USER\source\repos\ProjectM\ProjectM.API\Properties\launchSettings.json...
+Building...
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'Amount' on entity type 'PFI'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'Tax' on entity type 'PFI'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'TotalAmount' on entity type 'PFI'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'TotalPrice' on entity type 'PFILineItem'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'UnitPrice' on entity type 'PFILineItem'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'ActualCost' on entity type 'Repair'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'CostEstimate' on entity type 'Repair'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'ContractValue' on entity type 'SLA'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (34ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+info: Program[0]
+      ✅ Database connection verified successfully
+info: Program[0]
+      💾 Connected to database: ProjectM.db
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (26ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+warn: Program[0]
+      ⚠️  4 pending migration(s) detected. Schema may need updates.
+info: Program[0]
+          Run manually: dotnet ef database update --project ProjectM.Infrastructure --startup-project ProjectM.API
+info: ProjectM.API.Services.TokenCleanupService[0]
+      Token Cleanup Service is starting.
+info: ProjectM.API.Services.TokenCleanupService[0]
+      Token Cleanup Service is performing cleanup at: 10/07/2026 20:45:58 +00:00
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://localhost:7008
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5144
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\USER\source\repos\ProjectM\ProjectM.API
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[CreatedAt], [r].[DeviceId], [r].[ExpiresAt], [r].[IpAddress], [r].[IsRevoked], [r].[ReplacedByToken], [r].[ReusedAt], [r].[RevokedAt], [r].[RevokedReason], [r].[Token], [r].[UserAgent], [r].[UserId]
+      FROM [RefreshTokens] AS [r]
+      WHERE [r].[ExpiresAt] < GETUTCDATE() AND [r].[IsRevoked] = CAST(0 AS bit)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (20ms) [Parameters=[@__cutoffDate_0='?' (DbType = DateTime2)], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[CreatedAt], [r].[DeviceId], [r].[ExpiresAt], [r].[IpAddress], [r].[IsRevoked], [r].[ReplacedByToken], [r].[ReusedAt], [r].[RevokedAt], [r].[RevokedReason], [r].[Token], [r].[UserAgent], [r].[UserId]
+      FROM [RefreshTokens] AS [r]
+      WHERE [r].[CreatedAt] < @__cutoffDate_0
+info: ProjectM.API.Services.TokenCleanupService[0]
+      Token Cleanup Service: No tokens to clean up at 10/07/2026 20:45:58 +00:00
+info: ProjectM.API.Controllers.UsersController[0]
+      Login attempt for admin@demo.com from ::1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__loginDto_Email_0='?' (Size = 450)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt]
+      FROM [Users] AS [u]
+      WHERE [u].[Email] = @__loginDto_Email_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime2)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      UPDATE [Users] SET [LastLoginAt] = @p0
+      OUTPUT 1
+      WHERE [Id] = @p1;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[CreatedAt], [r].[DeviceId], [r].[ExpiresAt], [r].[IpAddress], [r].[IsRevoked], [r].[ReplacedByToken], [r].[ReusedAt], [r].[RevokedAt], [r].[RevokedReason], [r].[Token], [r].[UserAgent], [r].[UserId]
+      FROM [RefreshTokens] AS [r]
+      WHERE [r].[UserId] = @__userId_0 AND [r].[IsRevoked] = CAST(0 AS bit) AND [r].[ExpiresAt] > GETUTCDATE()
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@p3='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (DbType = DateTime2), @p2='?' (Size = 4000), @p4='?' (DbType = DateTime2), @p5='?' (Size = 4000), @p6='?' (DbType = DateTime2), @p7='?' (Size = 4000), @p8='?' (DbType = Boolean), @p9='?' (Size = 4000), @p10='?' (DbType = DateTime2), @p11='?' (DbType = DateTime2), @p12='?' (Size = 4000), @p13='?' (Size = 450), @p14='?' (Size = 4000), @p15='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SET NOCOUNT ON;
+      UPDATE [RefreshTokens] SET [IsRevoked] = @p0, [RevokedAt] = @p1, [RevokedReason] = @p2
+      OUTPUT 1
+      WHERE [Id] = @p3;
+      INSERT INTO [RefreshTokens] ([CreatedAt], [DeviceId], [ExpiresAt], [IpAddress], [IsRevoked], [ReplacedByToken], [ReusedAt], [RevokedAt], [RevokedReason], [Token], [UserAgent], [UserId])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15);
+info: ProjectM.API.Controllers.UsersController[0]
+      User logged in successfully: admin@demo.com
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (15ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = DateTime2), @p4='?' (DbType = DateTime2), @p5='?' (Size = 4000), @p6='?' (DbType = DateTime2), @p7='?' (DbType = Int32), @p8='?' (Size = 4000), @p9='?' (Size = 4000), @p10='?' (Size = 4000), @p11='?' (Size = 4000), @p12='?' (Size = 4000), @p13='?' (Size = 4000), @p14='?' (Size = 450), @p15='?' (Size = 4000), @p16='?' (DbType = DateTime2), @p17='?' (DbType = Int32), @p18='?' (Size = 4000)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      INSERT INTO [ClientCompanies] ([Address], [City], [CompanyName], [ContractEndDate], [ContractStartDate], [Country], [CreatedAt], [EmployeeCount], [Industry], [Notes], [PaymentTerms], [PostalCode], [PreferredCurrency], [RegistrationNumber], [State], [TaxID], [UpdatedAt], [UserId], [Website])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+fail: Microsoft.EntityFrameworkCore.Update[10000]
+      An exception occurred in the database while saving changes for context type 'ProjectM.Infrastructure.Data.ApplicationDbContext'.
+      Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+       ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Violation of UNIQUE KEY constraint 'UQ__ClientCo__1788CC4DF4B71994'. Cannot insert duplicate key in object 'dbo.ClientCompanies'. The duplicate key value is (9).
+         at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+         at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+         at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+         at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+         at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+         at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+         at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+         at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+      --- End of stack trace from previous location ---
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+      ClientConnectionId:c21b4c47-194f-40b3-af1a-75cfd4434ac8
+      Error Number:2627,State:1,Class:14
+         --- End of inner exception stack trace ---
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+      Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+       ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Violation of UNIQUE KEY constraint 'UQ__ClientCo__1788CC4DF4B71994'. Cannot insert duplicate key in object 'dbo.ClientCompanies'. The duplicate key value is (9).
+         at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+         at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+         at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+         at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+         at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+         at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+         at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+         at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+      --- End of stack trace from previous location ---
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+      ClientConnectionId:c21b4c47-194f-40b3-af1a-75cfd4434ac8
+      Error Number:2627,State:1,Class:14
+         --- End of inner exception stack trace ---
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+      Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+       ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Violation of UNIQUE KEY constraint 'UQ__ClientCo__1788CC4DF4B71994'. Cannot insert duplicate key in object 'dbo.ClientCompanies'. The duplicate key value is (9).
+         at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+         at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+         at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+         at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+         at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+         at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+         at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+         at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+      --- End of stack trace from previous location ---
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+      ClientConnectionId:c21b4c47-194f-40b3-af1a-75cfd4434ac8
+      Error Number:2627,State:1,Class:14
+         --- End of inner exception stack trace ---
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+         at ProjectM.Services.Services.ClientCompanyService.CreateClientCompanyAsync(CreateClientCompanyDto createClientCompanyDto) in C:\Users\USER\source\repos\ProjectM\ProjectM.Services\Services\ClientCompanyService.cs:line 78
+         at ProjectM.API.Controllers.ClientCompaniesController.CreateClientCompany(CreateClientCompanyDto createClientCompanyDto) in C:\Users\USER\source\repos\ProjectM\ProjectM.API\Controllers\ClientCompaniesController.cs:line 60
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+         at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+         at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+         at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+         at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+         at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [c].[Id], [c].[Address], [c].[City], [c].[CompanyName], [c].[ContractEndDate], [c].[ContractStartDate], [c].[Country], [c].[CreatedAt], [c].[EmployeeCount], [c].[Industry], [c].[Notes], [c].[PaymentTerms], [c].[PostalCode], [c].[PreferredCurrency], [c].[RegistrationNumber], [c].[State], [c].[TaxID], [c].[UpdatedAt], [c].[UserId], [c].[Website], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt]
+      FROM [ClientCompanies] AS [c]
+      INNER JOIN [Users] AS [u] ON [c].[UserId] = [u].[Id]
+      ORDER BY [c].[CompanyName]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[@p0='?' (DbType = DateTime2), @p1='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (DbType = Int32), @p8='?' (Size = 4000), @p9='?' (Size = 4000), @p10='?' (DbType = DateTime2), @p11='?' (Size = 4000), @p12='?' (Size = 4000), @p13='?' (Size = 4000), @p14='?' (Size = 4000), @p15='?' (Size = 450), @p16='?' (DbType = Int32), @p17='?' (DbType = DateTime2)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      INSERT INTO [Repairs] ([ActualCompletionDate], [ActualCost], [ActualDowntime], [ClientId], [CostEstimate], [CreatedAt], [CreatedBy], [DowntimeProjection], [EquipmentName], [EquipmentSerial], [EstimatedCompletionDate], [IssueDescription], [Notes], [PFIUrl], [Priority], [Status], [TechnicianId], [UpdatedAt])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (12ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [u0].[Id], [u0].[Company], [u0].[CreatedAt], [u0].[Email], [u0].[IsActive], [u0].[LastLoginAt], [u0].[Name], [u0].[PasswordHash], [u0].[Phone], [u0].[Role], [u0].[UpdatedAt], [u1].[Id], [u1].[Company], [u1].[CreatedAt], [u1].[Email], [u1].[IsActive], [u1].[LastLoginAt], [u1].[Name], [u1].[PasswordHash], [u1].[Phone], [u1].[Role], [u1].[UpdatedAt]
+      FROM [Repairs] AS [r]
+      INNER JOIN [Users] AS [u] ON [r].[ClientId] = [u].[Id]
+      LEFT JOIN [Users] AS [u0] ON [r].[TechnicianId] = [u0].[Id]
+      INNER JOIN [Users] AS [u1] ON [r].[CreatedBy] = [u1].[Id]
+      WHERE [r].[Id] = @__id_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [u0].[Id], [u0].[Company], [u0].[CreatedAt], [u0].[Email], [u0].[IsActive], [u0].[LastLoginAt], [u0].[Name], [u0].[PasswordHash], [u0].[Phone], [u0].[Role], [u0].[UpdatedAt], [u1].[Id], [u1].[Company], [u1].[CreatedAt], [u1].[Email], [u1].[IsActive], [u1].[LastLoginAt], [u1].[Name], [u1].[PasswordHash], [u1].[Phone], [u1].[Role], [u1].[UpdatedAt]
+      FROM [Repairs] AS [r]
+      INNER JOIN [Users] AS [u] ON [r].[ClientId] = [u].[Id]
+      LEFT JOIN [Users] AS [u0] ON [r].[TechnicianId] = [u0].[Id]
+      INNER JOIN [Users] AS [u1] ON [r].[CreatedBy] = [u1].[Id]
+      ORDER BY [r].[CreatedAt] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (12ms) [Parameters=[@p0='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = DateTime2), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (DbType = DateTime2), @p8='?' (Size = 450), @p9='?' (DbType = Int32), @p10='?' (Size = 450), @p11='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p12='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p13='?' (DbType = DateTime2), @p14='?' (DbType = DateTime2)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      INSERT INTO [PFIs] ([Amount], [ApprovedAt], [ApprovedBy], [CreatedAt], [Currency], [Description], [FileUrl], [IssueDate], [PFINumber], [RepairId], [Status], [Tax], [TotalAmount], [UpdatedAt], [ValidUntil])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[@p0='?' (DbType = DateTime2), @p1='?' (Size = 4000), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      INSERT INTO [PFILineItems] ([CreatedAt], [Description], [PFIId], [Quantity], [TotalPrice], [UnitPrice])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[@__pfiId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT COALESCE(SUM(CAST([p].[Quantity] AS decimal(18,2)) * [p].[UnitPrice]), 0.0)
+      FROM [PFILineItems] AS [p]
+      WHERE [p].[PFIId] = @__pfiId_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Precision = 18) (Scale = 2) (DbType = Decimal)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      UPDATE [PFIs] SET [TotalAmount] = @p0
+      OUTPUT 1
+      WHERE [Id] = @p1;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (9ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[Amount], [t].[ApprovedAt], [t].[ApprovedBy], [t].[CreatedAt], [t].[Currency], [t].[Description], [t].[FileUrl], [t].[IssueDate], [t].[PFINumber], [t].[RepairId], [t].[Status], [t].[Tax], [t].[TotalAmount], [t].[UpdatedAt], [t].[ValidUntil], [t].[Id0], [t].[ActualCompletionDate], [t].[ActualCost], [t].[ActualDowntime], [t].[ClientId], [t].[CostEstimate], [t].[CreatedAt0], [t].[CreatedBy], [t].[DowntimeProjection], [t].[EquipmentName], [t].[EquipmentSerial], [t].[EstimatedCompletionDate], [t].[IssueDescription], [t].[Notes], [t].[PFIUrl], [t].[Priority], [t].[Status0], [t].[TechnicianId], [t].[UpdatedAt0], [t].[Id1], [t].[Company], [t].[CreatedAt1], [t].[Email], [t].[IsActive], [t].[LastLoginAt], [t].[Name], [t].[PasswordHash], [t].[Phone], [t].[Role], [t].[UpdatedAt1], [p0].[Id], [p0].[CreatedAt], [p0].[Description], [p0].[PFIId], [p0].[Quantity], [p0].[TotalPrice], [p0].[UnitPrice]
+      FROM (
+          SELECT TOP(1) [p].[Id], [p].[Amount], [p].[ApprovedAt], [p].[ApprovedBy], [p].[CreatedAt], [p].[Currency], [p].[Description], [p].[FileUrl], [p].[IssueDate], [p].[PFINumber], [p].[RepairId], [p].[Status], [p].[Tax], [p].[TotalAmount], [p].[UpdatedAt], [p].[ValidUntil], [r].[Id] AS [Id0], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt] AS [CreatedAt0], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status] AS [Status0], [r].[TechnicianId], [r].[UpdatedAt] AS [UpdatedAt0], [u].[Id] AS [Id1], [u].[Company], [u].[CreatedAt] AS [CreatedAt1], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt] AS [UpdatedAt1]
+          FROM [PFIs] AS [p]
+          INNER JOIN [Repairs] AS [r] ON [p].[RepairId] = [r].[Id]
+          LEFT JOIN [Users] AS [u] ON [p].[ApprovedBy] = [u].[Id]
+          WHERE [p].[Id] = @__id_0
+      ) AS [t]
+      LEFT JOIN [PFILineItems] AS [p0] ON [t].[Id] = [p0].[PFIId]
+      ORDER BY [t].[Id], [t].[Id0], [t].[Id1]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[Amount], [p].[ApprovedAt], [p].[ApprovedBy], [p].[CreatedAt], [p].[Currency], [p].[Description], [p].[FileUrl], [p].[IssueDate], [p].[PFINumber], [p].[RepairId], [p].[Status], [p].[Tax], [p].[TotalAmount], [p].[UpdatedAt], [p].[ValidUntil], [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [p0].[Id], [p0].[CreatedAt], [p0].[Description], [p0].[PFIId], [p0].[Quantity], [p0].[TotalPrice], [p0].[UnitPrice]
+      FROM [PFIs] AS [p]
+      INNER JOIN [Repairs] AS [r] ON [p].[RepairId] = [r].[Id]
+      LEFT JOIN [Users] AS [u] ON [p].[ApprovedBy] = [u].[Id]
+      LEFT JOIN [PFILineItems] AS [p0] ON [p].[Id] = [p0].[PFIId]
+      ORDER BY [p].[CreatedAt] DESC, [p].[Id], [r].[Id], [u].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [u0].[Id], [u0].[Company], [u0].[CreatedAt], [u0].[Email], [u0].[IsActive], [u0].[LastLoginAt], [u0].[Name], [u0].[PasswordHash], [u0].[Phone], [u0].[Role], [u0].[UpdatedAt], [u1].[Id], [u1].[Company], [u1].[CreatedAt], [u1].[Email], [u1].[IsActive], [u1].[LastLoginAt], [u1].[Name], [u1].[PasswordHash], [u1].[Phone], [u1].[Role], [u1].[UpdatedAt]
+      FROM [Repairs] AS [r]
+      INNER JOIN [Users] AS [u] ON [r].[ClientId] = [u].[Id]
+      LEFT JOIN [Users] AS [u0] ON [r].[TechnicianId] = [u0].[Id]
+      INNER JOIN [Users] AS [u1] ON [r].[CreatedBy] = [u1].[Id]
+      WHERE [r].[Id] = @__id_0
+info: ProjectM.API.Controllers.UsersController[0]
+      Login attempt for admin@demo.com from ::1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__loginDto_Email_0='?' (Size = 450)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt]
+      FROM [Users] AS [u]
+      WHERE [u].[Email] = @__loginDto_Email_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime2)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      UPDATE [Users] SET [LastLoginAt] = @p0
+      OUTPUT 1
+      WHERE [Id] = @p1;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[CreatedAt], [r].[DeviceId], [r].[ExpiresAt], [r].[IpAddress], [r].[IsRevoked], [r].[ReplacedByToken], [r].[ReusedAt], [r].[RevokedAt], [r].[RevokedReason], [r].[Token], [r].[UserAgent], [r].[UserId]
+      FROM [RefreshTokens] AS [r]
+      WHERE [r].[UserId] = @__userId_0 AND [r].[IsRevoked] = CAST(0 AS bit) AND [r].[ExpiresAt] > GETUTCDATE()
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p3='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (DbType = DateTime2), @p2='?' (Size = 4000), @p4='?' (DbType = DateTime2), @p5='?' (Size = 4000), @p6='?' (DbType = DateTime2), @p7='?' (Size = 4000), @p8='?' (DbType = Boolean), @p9='?' (Size = 4000), @p10='?' (DbType = DateTime2), @p11='?' (DbType = DateTime2), @p12='?' (Size = 4000), @p13='?' (Size = 450), @p14='?' (Size = 4000), @p15='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SET NOCOUNT ON;
+      UPDATE [RefreshTokens] SET [IsRevoked] = @p0, [RevokedAt] = @p1, [RevokedReason] = @p2
+      OUTPUT 1
+      WHERE [Id] = @p3;
+      INSERT INTO [RefreshTokens] ([CreatedAt], [DeviceId], [ExpiresAt], [IpAddress], [IsRevoked], [ReplacedByToken], [ReusedAt], [RevokedAt], [RevokedReason], [Token], [UserAgent], [UserId])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15);
+info: ProjectM.API.Controllers.UsersController[0]
+      User logged in successfully: admin@demo.com
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [c].[Id], [c].[Address], [c].[City], [c].[CompanyName], [c].[ContractEndDate], [c].[ContractStartDate], [c].[Country], [c].[CreatedAt], [c].[EmployeeCount], [c].[Industry], [c].[Notes], [c].[PaymentTerms], [c].[PostalCode], [c].[PreferredCurrency], [c].[RegistrationNumber], [c].[State], [c].[TaxID], [c].[UpdatedAt], [c].[UserId], [c].[Website]
+      FROM [ClientCompanies] AS [c]
+      WHERE [c].[Id] = @__p_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      DELETE FROM [ClientCompanies]
+      OUTPUT 1
+      WHERE [Id] = @p0;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (48ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = DateTime2), @p4='?' (DbType = DateTime2), @p5='?' (Size = 4000), @p6='?' (DbType = DateTime2), @p7='?' (DbType = Int32), @p8='?' (Size = 4000), @p9='?' (Size = 4000), @p10='?' (Size = 4000), @p11='?' (Size = 4000), @p12='?' (Size = 4000), @p13='?' (Size = 4000), @p14='?' (Size = 450), @p15='?' (Size = 4000), @p16='?' (DbType = DateTime2), @p17='?' (DbType = Int32), @p18='?' (Size = 4000)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      INSERT INTO [ClientCompanies] ([Address], [City], [CompanyName], [ContractEndDate], [ContractStartDate], [Country], [CreatedAt], [EmployeeCount], [Industry], [Notes], [PaymentTerms], [PostalCode], [PreferredCurrency], [RegistrationNumber], [State], [TaxID], [UpdatedAt], [UserId], [Website])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (19ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [c].[Id], [c].[Address], [c].[City], [c].[CompanyName], [c].[ContractEndDate], [c].[ContractStartDate], [c].[Country], [c].[CreatedAt], [c].[EmployeeCount], [c].[Industry], [c].[Notes], [c].[PaymentTerms], [c].[PostalCode], [c].[PreferredCurrency], [c].[RegistrationNumber], [c].[State], [c].[TaxID], [c].[UpdatedAt], [c].[UserId], [c].[Website], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt]
+      FROM [ClientCompanies] AS [c]
+      INNER JOIN [Users] AS [u] ON [c].[UserId] = [u].[Id]
+      WHERE [c].[Id] = @__id_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [c].[Id], [c].[Address], [c].[City], [c].[CompanyName], [c].[ContractEndDate], [c].[ContractStartDate], [c].[Country], [c].[CreatedAt], [c].[EmployeeCount], [c].[Industry], [c].[Notes], [c].[PaymentTerms], [c].[PostalCode], [c].[PreferredCurrency], [c].[RegistrationNumber], [c].[State], [c].[TaxID], [c].[UpdatedAt], [c].[UserId], [c].[Website], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt]
+      FROM [ClientCompanies] AS [c]
+      INNER JOIN [Users] AS [u] ON [c].[UserId] = [u].[Id]
+      ORDER BY [c].[CompanyName]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [s].[Id], [s].[ClientId], [s].[ContractValue], [s].[CreatedAt], [s].[CreatedBy], [s].[Description], [s].[DocumentUrl], [s].[ExecutedAt], [s].[IsDeleted], [s].[RenewalDate], [s].[ServiceScope], [s].[Status], [s].[Title], [s].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [u0].[Id], [u0].[Company], [u0].[CreatedAt], [u0].[Email], [u0].[IsActive], [u0].[LastLoginAt], [u0].[Name], [u0].[PasswordHash], [u0].[Phone], [u0].[Role], [u0].[UpdatedAt]
+      FROM [SLAs] AS [s]
+      INNER JOIN [Users] AS [u] ON [s].[ClientId] = [u].[Id]
+      INNER JOIN [Users] AS [u0] ON [s].[CreatedBy] = [u0].[Id]
+      ORDER BY [s].[CreatedAt] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [u0].[Id], [u0].[Company], [u0].[CreatedAt], [u0].[Email], [u0].[IsActive], [u0].[LastLoginAt], [u0].[Name], [u0].[PasswordHash], [u0].[Phone], [u0].[Role], [u0].[UpdatedAt], [u1].[Id], [u1].[Company], [u1].[CreatedAt], [u1].[Email], [u1].[IsActive], [u1].[LastLoginAt], [u1].[Name], [u1].[PasswordHash], [u1].[Phone], [u1].[Role], [u1].[UpdatedAt]
+      FROM [Repairs] AS [r]
+      INNER JOIN [Users] AS [u] ON [r].[ClientId] = [u].[Id]
+      LEFT JOIN [Users] AS [u0] ON [r].[TechnicianId] = [u0].[Id]
+      INNER JOIN [Users] AS [u1] ON [r].[CreatedBy] = [u1].[Id]
+      ORDER BY [r].[CreatedAt] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (10ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[Amount], [p].[ApprovedAt], [p].[ApprovedBy], [p].[CreatedAt], [p].[Currency], [p].[Description], [p].[FileUrl], [p].[IssueDate], [p].[PFINumber], [p].[RepairId], [p].[Status], [p].[Tax], [p].[TotalAmount], [p].[UpdatedAt], [p].[ValidUntil], [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [p0].[Id], [p0].[CreatedAt], [p0].[Description], [p0].[PFIId], [p0].[Quantity], [p0].[TotalPrice], [p0].[UnitPrice]
+      FROM [PFIs] AS [p]
+      INNER JOIN [Repairs] AS [r] ON [p].[RepairId] = [r].[Id]
+      LEFT JOIN [Users] AS [u] ON [p].[ApprovedBy] = [u].[Id]
+      LEFT JOIN [PFILineItems] AS [p0] ON [p].[Id] = [p0].[PFIId]
+      ORDER BY [p].[CreatedAt] DESC, [p].[Id], [r].[Id], [u].[Id]
+info: ProjectM.API.Controllers.UsersController[0]
+      Login attempt for admin@demo.com from ::1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (46ms) [Parameters=[@__loginDto_Email_0='?' (Size = 450)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt]
+      FROM [Users] AS [u]
+      WHERE [u].[Email] = @__loginDto_Email_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (23ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime2)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      UPDATE [Users] SET [LastLoginAt] = @p0
+      OUTPUT 1
+      WHERE [Id] = @p1;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (14ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[CreatedAt], [r].[DeviceId], [r].[ExpiresAt], [r].[IpAddress], [r].[IsRevoked], [r].[ReplacedByToken], [r].[ReusedAt], [r].[RevokedAt], [r].[RevokedReason], [r].[Token], [r].[UserAgent], [r].[UserId]
+      FROM [RefreshTokens] AS [r]
+      WHERE [r].[UserId] = @__userId_0 AND [r].[IsRevoked] = CAST(0 AS bit) AND [r].[ExpiresAt] > GETUTCDATE()
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (319ms) [Parameters=[@p3='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (DbType = DateTime2), @p2='?' (Size = 4000), @p4='?' (DbType = DateTime2), @p5='?' (Size = 4000), @p6='?' (DbType = DateTime2), @p7='?' (Size = 4000), @p8='?' (DbType = Boolean), @p9='?' (Size = 4000), @p10='?' (DbType = DateTime2), @p11='?' (DbType = DateTime2), @p12='?' (Size = 4000), @p13='?' (Size = 450), @p14='?' (Size = 4000), @p15='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SET NOCOUNT ON;
+      UPDATE [RefreshTokens] SET [IsRevoked] = @p0, [RevokedAt] = @p1, [RevokedReason] = @p2
+      OUTPUT 1
+      WHERE [Id] = @p3;
+      INSERT INTO [RefreshTokens] ([CreatedAt], [DeviceId], [ExpiresAt], [IpAddress], [IsRevoked], [ReplacedByToken], [ReusedAt], [RevokedAt], [RevokedReason], [Token], [UserAgent], [UserId])
+      OUTPUT INSERTED.[Id]
+      VALUES (@p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15);
+info: ProjectM.API.Controllers.UsersController[0]
+      User logged in successfully: admin@demo.com
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1,092ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [s].[Id], [s].[ClientId], [s].[ContractValue], [s].[CreatedAt], [s].[CreatedBy], [s].[Description], [s].[DocumentUrl], [s].[ExecutedAt], [s].[IsDeleted], [s].[RenewalDate], [s].[ServiceScope], [s].[Status], [s].[Title], [s].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [u0].[Id], [u0].[Company], [u0].[CreatedAt], [u0].[Email], [u0].[IsActive], [u0].[LastLoginAt], [u0].[Name], [u0].[PasswordHash], [u0].[Phone], [u0].[Role], [u0].[UpdatedAt]
+      FROM [SLAs] AS [s]
+      INNER JOIN [Users] AS [u] ON [s].[ClientId] = [u].[Id]
+      INNER JOIN [Users] AS [u0] ON [s].[CreatedBy] = [u0].[Id]
+      ORDER BY [s].[CreatedAt] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [c].[Id], [c].[Address], [c].[City], [c].[CompanyName], [c].[ContractEndDate], [c].[ContractStartDate], [c].[Country], [c].[CreatedAt], [c].[EmployeeCount], [c].[Industry], [c].[Notes], [c].[PaymentTerms], [c].[PostalCode], [c].[PreferredCurrency], [c].[RegistrationNumber], [c].[State], [c].[TaxID], [c].[UpdatedAt], [c].[UserId], [c].[Website], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt]
+      FROM [ClientCompanies] AS [c]
+      INNER JOIN [Users] AS [u] ON [c].[UserId] = [u].[Id]
+      ORDER BY [c].[CompanyName]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (114ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [u0].[Id], [u0].[Company], [u0].[CreatedAt], [u0].[Email], [u0].[IsActive], [u0].[LastLoginAt], [u0].[Name], [u0].[PasswordHash], [u0].[Phone], [u0].[Role], [u0].[UpdatedAt], [u1].[Id], [u1].[Company], [u1].[CreatedAt], [u1].[Email], [u1].[IsActive], [u1].[LastLoginAt], [u1].[Name], [u1].[PasswordHash], [u1].[Phone], [u1].[Role], [u1].[UpdatedAt]
+      FROM [Repairs] AS [r]
+      INNER JOIN [Users] AS [u] ON [r].[ClientId] = [u].[Id]
+      LEFT JOIN [Users] AS [u0] ON [r].[TechnicianId] = [u0].[Id]
+      INNER JOIN [Users] AS [u1] ON [r].[CreatedBy] = [u1].[Id]
+      ORDER BY [r].[CreatedAt] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (30ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[Amount], [p].[ApprovedAt], [p].[ApprovedBy], [p].[CreatedAt], [p].[Currency], [p].[Description], [p].[FileUrl], [p].[IssueDate], [p].[PFINumber], [p].[RepairId], [p].[Status], [p].[Tax], [p].[TotalAmount], [p].[UpdatedAt], [p].[ValidUntil], [r].[Id], [r].[ActualCompletionDate], [r].[ActualCost], [r].[ActualDowntime], [r].[ClientId], [r].[CostEstimate], [r].[CreatedAt], [r].[CreatedBy], [r].[DowntimeProjection], [r].[EquipmentName], [r].[EquipmentSerial], [r].[EstimatedCompletionDate], [r].[IssueDescription], [r].[Notes], [r].[PFIUrl], [r].[Priority], [r].[Status], [r].[TechnicianId], [r].[UpdatedAt], [u].[Id], [u].[Company], [u].[CreatedAt], [u].[Email], [u].[IsActive], [u].[LastLoginAt], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [p0].[Id], [p0].[CreatedAt], [p0].[Description], [p0].[PFIId], [p0].[Quantity], [p0].[TotalPrice], [p0].[UnitPrice]
+      FROM [PFIs] AS [p]
+      INNER JOIN [Repairs] AS [r] ON [p].[RepairId] = [r].[Id]
+      LEFT JOIN [Users] AS [u] ON [p].[ApprovedBy] = [u].[Id]
+      LEFT JOIN [PFILineItems] AS [p0] ON [p].[Id] = [p0].[PFIId]
+      ORDER BY [p].[CreatedAt] DESC, [p].[Id], [r].[Id], [u].[Id]
