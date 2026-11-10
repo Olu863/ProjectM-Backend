@@ -66,11 +66,16 @@ namespace ProjectM.Services.Services
 
         public async Task<SLADto> CreateSLAAsync(CreateSLADto createSLADto, int createdBy)
         {
+            if (!await _context.Users.AnyAsync(u => u.Id == createSLADto.ClientId))
+                return null;
+
             var sla = new SLA
             {
                 ClientId = createSLADto.ClientId,
-                Title = createSLADto.SLAType,
-                ServiceScope = createSLADto.Terms,
+                Title = createSLADto.SLAType ?? "",
+                Description = "",                                  // NOT NULL in the database, not part of the API yet
+                DocumentUrl = "",                                  // NOT NULL in the database, not part of the API yet
+                ServiceScope = createSLADto.Terms ?? "",
                 ContractValue = createSLADto.ContractValue,
                 RenewalDate = createSLADto.RenewalDate ?? DateTime.UtcNow.AddYears(1),
                 Status = "Active",

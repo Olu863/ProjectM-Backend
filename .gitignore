@@ -38,4 +38,8 @@ secrets.json
 # Connection strings and sensitive configuration
 appsettings.*.json
 !appsettings.json
-!appsettings.Development.json
+
+# Logs and editor temp files (these were previously committed by accident)
+*.log
+*.TMP
+*~*.TMP

@@ -8,7 +8,7 @@ namespace ProjectM.Services.Services
     {
         Task<UserDto> GetUserByIdAsync(int id);
         Task<UserDto> GetUserByEmailAsync(string email);
-        Task<UserDto> CreateUserAsync(CreateUserDto createUserDto);
+        Task<UserDto> CreateUserAsync(CreateUserDto createUserDto, bool isActive = true);
         Task<UserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto);
         Task DeleteUserAsync(int id);
         Task<LoginResponseDto> LoginAsync(LoginDto loginDto, string ipAddress, string userAgent);
@@ -23,5 +23,6 @@ namespace ProjectM.Services.Services
         Task<bool> UpdateLastLoginAsync(int userId);
         Task<bool> AssignRoleAsync(int userId, string role);
         Task<IEnumerable<UserDto>> GetUsersByRoleAsync(string role);
+        Task<IEnumerable<UserDto>> GetUsersAsync(bool? isActive);
     }
 }

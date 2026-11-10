@@ -27,14 +27,7 @@ namespace ProjectM.API.Services
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                try
-                {
-                    await DoWorkAsync(stoppingToken);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error occurred while cleaning up tokens.");
-                }
+                await DoWorkAsync(stoppingToken);
 
                 // Wait for the next cleanup cycle
                 await Task.Delay(_cleanupInterval, stoppingToken);
@@ -51,25 +44,18 @@ namespace ProjectM.API.Services
             {
                 var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 
-                try
-                {
-                    var deletedCount = await userService.CleanupExpiredTokensAsync();
+                var deletedCount = await userService.CleanupExpiredTokensAsync();
 
-                    if (deletedCount > 0)
-                    {
-                        _logger.LogInformation(
-                            "Token Cleanup Service cleaned up {Count} expired/old tokens at {Time}",
-                            deletedCount,
-                            DateTimeOffset.UtcNow);
-                    }
-                    else
-                    {
-                        _logger.LogInformation("Token Cleanup Service: No tokens to clean up at {Time}", DateTimeOffset.UtcNow);
-                    }
-                }
-                catch (Exception ex)
+                if (deletedCount > 0)
                 {
-                    _logger.LogError(ex, "Error in TokenCleanupService while cleaning tokens");
+                    _logger.LogInformation(
+                        "Token Cleanup Service cleaned up {Count} expired/old tokens at {Time}",
+                        deletedCount,
+                        DateTimeOffset.UtcNow);
+                }
+                else
+                {
+                    _logger.LogInformation("Token Cleanup Service: No tokens to clean up at {Time}", DateTimeOffset.UtcNow);
                 }
             }
         }

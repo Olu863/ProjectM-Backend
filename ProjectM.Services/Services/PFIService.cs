@@ -70,10 +70,15 @@ namespace ProjectM.Services.Services
 
         public async Task<PFIDto> CreatePFIAsync(CreatePFIDto createPFIDto)
         {
+            if (!await _context.Repairs.AnyAsync(r => r.Id == createPFIDto.RepairId))
+                return null;
+
             var pfi = new PFI
             {
                 RepairId = createPFIDto.RepairId,
                 PFINumber = GeneratePFINumber(),
+                Description = "",   // NOT NULL in the database
+                FileUrl = "",       // NOT NULL in the database
                 Status = "Pending",
                 CreatedAt = DateTime.UtcNow
             };
@@ -91,15 +96,17 @@ namespace ProjectM.Services.Services
                         PFIId = pfi.Id,
                         Description = item.Description,
                         Quantity = item.Quantity,
-                        UnitPrice = item.UnitPrice
+                        UnitPrice = item.UnitPrice,
+                        TotalPrice = item.Quantity * item.UnitPrice
                     };
                     _context.PFILineItems.Add(lineItem);
                 }
                 await _context.SaveChangesAsync();
             }
 
-            // Calculate total
-            pfi.TotalAmount = await CalculateTotalAmount(pfi.Id);
+            // Calculate totals (Amount = sum of the line items; Tax is currently always 0)
+            pfi.Amount = await CalculateTotalAmount(pfi.Id);
+            pfi.TotalAmount = pfi.Amount + pfi.Tax;
             await _context.SaveChangesAsync();
 
             return await GetPFIByIdAsync(pfi.Id);
@@ -128,14 +135,16 @@ namespace ProjectM.Services.Services
                         PFIId = pfi.Id,
                         Description = item.Description,
                         Quantity = item.Quantity,
-                        UnitPrice = item.UnitPrice
+                        UnitPrice = item.UnitPrice,
+                        TotalPrice = item.Quantity * item.UnitPrice
                     };
                     _context.PFILineItems.Add(lineItem);
                 }
 
-                // Recalculate total
+                // Recalculate totals
                 await _context.SaveChangesAsync();
-                pfi.TotalAmount = await CalculateTotalAmount(pfi.Id);
+                pfi.Amount = await CalculateTotalAmount(pfi.Id);
+                pfi.TotalAmount = pfi.Amount + pfi.Tax;
             }
 
             pfi.UpdatedAt = DateTime.UtcNow;

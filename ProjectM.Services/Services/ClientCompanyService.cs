@@ -60,17 +60,30 @@ namespace ProjectM.Services.Services
 
         public async Task<ClientCompanyDto> CreateClientCompanyAsync(CreateClientCompanyDto createClientCompanyDto)
         {
+            if (!await _context.Users.AnyAsync(u => u.Id == createClientCompanyDto.UserId))
+                return null;
+
+            // UserId has a unique index, so a second company for the same user would fail with a database error.
+            if (await _context.ClientCompanies.AnyAsync(c => c.UserId == createClientCompanyDto.UserId))
+                return null;
+
+            // Many of these columns are NOT NULL in the database, so never send null.
             var company = new ClientCompany
             {
                 UserId = createClientCompanyDto.UserId,
-                CompanyName = createClientCompanyDto.CompanyName,
-                Address = createClientCompanyDto.Address,
-                City = createClientCompanyDto.City,
-                State = createClientCompanyDto.State,
-                Country = createClientCompanyDto.Country,
-                PostalCode = createClientCompanyDto.PostalCode,
-                TaxID = createClientCompanyDto.TRN,
-                Industry = createClientCompanyDto.Industry,
+                CompanyName = createClientCompanyDto.CompanyName ?? "",
+                RegistrationNumber = "",
+                Address = createClientCompanyDto.Address ?? "",
+                City = createClientCompanyDto.City ?? "",
+                State = createClientCompanyDto.State ?? "",
+                Country = createClientCompanyDto.Country ?? "Nigeria",
+                PostalCode = createClientCompanyDto.PostalCode ?? "",
+                TaxID = createClientCompanyDto.TRN ?? "",
+                Website = "",
+                Industry = createClientCompanyDto.Industry ?? "",
+                PaymentTerms = "",
+                PreferredCurrency = "NGN",
+                Notes = "",
                 CreatedAt = DateTime.UtcNow
             };
 

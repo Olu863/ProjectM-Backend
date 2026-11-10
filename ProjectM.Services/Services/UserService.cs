@@ -11,6 +11,8 @@ using ProjectM.Core.Entities;
 using ProjectM.Infrastructure.Data;
 using ProjectM.Services.DTOs;
 using BCrypt.Net;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectM.Services.Services
 {
@@ -44,7 +46,7 @@ namespace ProjectM.Services.Services
             if (string.IsNullOrWhiteSpace(role))
                 return role;
 
-            // Try exact match first
+            // Check exact match first
             if (RoleMapping.TryGetValue(role, out var normalizedRole))
                 return normalizedRole;
 
@@ -70,21 +72,21 @@ namespace ProjectM.Services.Services
             return MapToUserDto(user);
         }
 
-        public async Task<UserDto> CreateUserAsync(CreateUserDto createUserDto)
+        public async Task<UserDto> CreateUserAsync(CreateUserDto createUserDto, bool isActive = true)
         {
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == createUserDto.Email);
             if (existingUser != null)
-                throw new InvalidOperationException("User with this email already exists.");
+                return null;
 
             var user = new User
             {
                 Name = createUserDto.Name,
                 Email = createUserDto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password),
-                Role = NormalizeRole(createUserDto.Role),  // Normalize role casing
+                Role = NormalizeRole(createUserDto.Role),
                 Company = createUserDto.Company,
                 Phone = createUserDto.Phone,
-                IsActive = true,
+                IsActive = isActive,   // was hardcoded to true
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -92,6 +94,17 @@ namespace ProjectM.Services.Services
             await _context.SaveChangesAsync();
 
             return MapToUserDto(user);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersAsync(bool? isActive)
+        {
+            var query = _context.Users.AsQueryable();
+
+            if (isActive.HasValue)
+                query = query.Where(u => u.IsActive == isActive.Value);
+
+            var users = await query.ToListAsync();
+            return users.Select(MapToUserDto);
         }
 
         public async Task<UserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
@@ -103,10 +116,10 @@ namespace ProjectM.Services.Services
             user.Name = updateUserDto.Name;
             user.Company = updateUserDto.Company;
             user.Phone = updateUserDto.Phone;
-            user.IsActive = updateUserDto.IsActive;
-            user.Role = NormalizeRole(updateUserDto.Role);  // Normalize role casing
+            if (updateUserDto.IsActive.HasValue)
+                user.IsActive = updateUserDto.IsActive.Value;
+            user.Role = NormalizeRole(updateUserDto.Role);
             user.UpdatedAt = DateTime.UtcNow;
-
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
@@ -211,13 +224,13 @@ namespace ProjectM.Services.Services
 
             // Validate configuration values
             if (string.IsNullOrWhiteSpace(jwtKey))
-                throw new InvalidOperationException("JWT Key is not configured. Please set Jwt:Key in appsettings.json or environment variables.");
+                return string.Empty;
 
             if (string.IsNullOrWhiteSpace(jwtIssuer))
-                throw new InvalidOperationException("JWT Issuer is not configured. Please set Jwt:Issuer in appsettings.json.");
+                return string.Empty;
 
             if (string.IsNullOrWhiteSpace(jwtAudience))
-                throw new InvalidOperationException("JWT Audience is not configured. Please set Jwt:Audience in appsettings.json.");
+                return string.Empty;
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -226,8 +239,8 @@ namespace ProjectM.Services.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Role, user.Role),
+                new Claim(ClaimTypes.Name, user.Name ?? user.Email),
+                new Claim(ClaimTypes.Role, user.Role ?? "Client"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
@@ -246,20 +259,9 @@ namespace ProjectM.Services.Services
         {
             var refreshTokenExpiryInDays = Convert.ToDouble(_configuration["Jwt:RefreshTokenExpiryInDays"] ?? "7");
 
-            // Revoke all existing active refresh tokens for this user
-            // NOTE: IsActive is a computed property, so we need to use database columns directly
-            var existingTokens = await _context.RefreshTokens
-                .Where(rt => rt.UserId == userId && !rt.IsRevoked && rt.ExpiresAt > DateTime.UtcNow)
-                .ToListAsync();
-
-            foreach (var existingToken in existingTokens)
-            {
-                existingToken.IsRevoked = true;
-                existingToken.RevokedAt = DateTime.UtcNow;
-                existingToken.RevokedReason = "Replaced by new token";
-            }
-
             // Generate new refresh token
+            // Existing sessions on other devices are no longer revoked here,
+            // so logging in on one device does not log the user out elsewhere.
             var refreshToken = new RefreshToken
             {
                 UserId = userId,
@@ -326,29 +328,35 @@ namespace ProjectM.Services.Services
 
             var user = refreshToken.User;
 
-            // REUSE DETECTION: If the token is already revoked but someone tries to use it,
-            // this indicates a potential token theft attack. Revoke all tokens for this user.
-            if (refreshToken.IsRevoked)
-            {
-                refreshToken.ReusedAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-
-                // Log security event
-                Console.WriteLine($"[SECURITY WARNING] Revoked token reuse detected for user {user.Email} from IP {ipAddress}");
-
-                // Revoke all active tokens for this user as a security measure
-                await RevokeAllUserTokensAsync(user.Id, "Token reuse detected - potential security breach");
-
+            // Deactivated users cannot refresh
+            if (!user.IsActive)
                 return null;
-            }
 
-            // Check if token is expired
+            // Expired tokens are simply rejected (checked before revoked,
+            // so cleaned up expired tokens don't trigger reuse detection)
             if (refreshToken.IsExpired)
                 return null;
 
-            // Mark the old token with the new token that will replace it
+            // REUSE DETECTION: only a token that was already rotated (replaced)
+            // and is used again is treated as a potential theft.
+            if (refreshToken.IsRevoked)
+            {
+                if (refreshToken.ReplacedByToken != null)
+                {
+                    refreshToken.ReusedAt = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+
+                    Console.WriteLine($"[SECURITY WARNING] Revoked token reuse detected for user {user.Email} from IP {ipAddress}");
+
+                    await RevokeAllUserTokensAsync(user.Id, "Token reuse detected");
+                }
+                return null;
+            }
+
+            // Issue the new refresh token
             var newRefreshToken = await GenerateRefreshTokenAsync(user.Id, ipAddress, userAgent);
 
+            // Revoke only the token that was just used
             refreshToken.IsRevoked = true;
             refreshToken.RevokedAt = DateTime.UtcNow;
             refreshToken.RevokedReason = "Replaced by new token";
@@ -412,7 +420,7 @@ namespace ProjectM.Services.Services
             if (user == null)
                 return false;
 
-            user.Role = role;
+            user.Role = NormalizeRole(role);
             user.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return true;

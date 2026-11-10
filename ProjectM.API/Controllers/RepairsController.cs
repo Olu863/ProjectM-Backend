@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectM.API.Authorization;
 using ProjectM.Services.DTOs;
 using ProjectM.Services.Interfaces;
 using System.Security.Claims;
@@ -21,7 +22,10 @@ namespace ProjectM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRepairs()
         {
-            var repairs = await _repairService.GetAllRepairsAsync();
+            // Clients only ever see their own repairs; staff see everything.
+            var repairs = User.IsStaff()
+                ? await _repairService.GetAllRepairsAsync()
+                : await _repairService.GetRepairsByClientAsync(User.GetUserId());
             return Ok(repairs);
         }
 
@@ -29,7 +33,7 @@ namespace ProjectM.API.Controllers
         public async Task<IActionResult> GetRepair(int id)
         {
             var repair = await _repairService.GetRepairByIdAsync(id);
-            if (repair == null)
+            if (repair == null || (!User.IsStaff() && repair.ClientId != User.GetUserId()))
                 return NotFound();
 
             return Ok(repair);
@@ -38,11 +42,15 @@ namespace ProjectM.API.Controllers
         [HttpGet("client/{clientId}")]
         public async Task<IActionResult> GetRepairsByClient(int clientId)
         {
+            if (!User.IsStaff() && clientId != User.GetUserId())
+                return Forbid();
+
             var repairs = await _repairService.GetRepairsByClientAsync(clientId);
             return Ok(repairs);
         }
 
         [HttpGet("technician/{technicianId}")]
+        [Authorize(Roles = AppRoles.Staff)]
         public async Task<IActionResult> GetRepairsByTechnician(int technicianId)
         {
             var repairs = await _repairService.GetRepairsByTechnicianAsync(technicianId);
@@ -50,6 +58,7 @@ namespace ProjectM.API.Controllers
         }
 
         [HttpGet("status/{status}")]
+        [Authorize(Roles = AppRoles.Staff)]
         public async Task<IActionResult> GetRepairsByStatus(string status)
         {
             var repairs = await _repairService.GetRepairsByStatusAsync(status);
@@ -59,12 +68,23 @@ namespace ProjectM.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRepair([FromBody] CreateRepairDto createRepairDto)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var userId = User.GetUserId();
+            if (userId == 0)
+                return Unauthorized();
+
+            // A client can only log repairs against their own account; staff choose the client.
+            if (!User.IsStaff())
+                createRepairDto.ClientId = userId;
+
             var repair = await _repairService.CreateRepairAsync(createRepairDto, userId);
+            if (repair == null)
+                return BadRequest(new { message = "Unable to create repair." });
+
             return CreatedAtAction(nameof(GetRepair), new { id = repair.Id }, repair);
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = AppRoles.Staff)]
         public async Task<IActionResult> UpdateRepair(int id, [FromBody] UpdateRepairDto updateRepairDto)
         {
             var repair = await _repairService.UpdateRepairAsync(id, updateRepairDto);
@@ -97,6 +117,7 @@ namespace ProjectM.API.Controllers
         }
 
         [HttpPost("{id}/update-status")]
+        [Authorize(Roles = AppRoles.Staff)]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
         {
             var result = await _repairService.UpdateStatusAsync(id, status);
@@ -107,6 +128,7 @@ namespace ProjectM.API.Controllers
         }
 
         [HttpPost("{id}/complete")]
+        [Authorize(Roles = AppRoles.Staff)]
         public async Task<IActionResult> CompleteRepair(int id, [FromBody] CompleteRepairRequest request)
         {
             var result = await _repairService.CompleteRepairAsync(id, request.ActualCost, request.ActualDowntime);

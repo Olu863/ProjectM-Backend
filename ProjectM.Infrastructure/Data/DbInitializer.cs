@@ -6,21 +6,31 @@ namespace ProjectM.Infrastructure.Data
 {
     public static class DbInitializer
     {
-        public static async Task InitializeAsync(ApplicationDbContext context)
+        /// <summary>
+        /// Seeds the first administrator and default settings into an EMPTY database.
+        /// The password is supplied by the caller (from user-secrets / environment variables) -
+        /// there is deliberately no built-in default password.
+        /// </summary>
+        public static async Task InitializeAsync(ApplicationDbContext context, string adminPassword, string? adminEmail = null)
         {
+            if (string.IsNullOrWhiteSpace(adminPassword))
+            {
+                return;
+            }
+
             // Check if we already have data
             if (await context.Users.AnyAsync())
             {
                 return; // DB has been seeded
             }
 
-            // Seed default admin user
+            // Seed the first admin user
             var adminUser = new User
             {
                 Name = "System Administrator",
-                Email = "admin@projectm.com",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
-                Phone = "+1234567890",
+                Email = string.IsNullOrWhiteSpace(adminEmail) ? "admin@projectm.local" : adminEmail.Trim(),
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword),
+                Phone = "",
                 Company = "ProjectM",
                 Role = "Admin",
                 IsActive = true,

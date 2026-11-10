@@ -49,10 +49,10 @@
 
 **Current Connection String:**
 ```
-Server=DESKTOP-HGDPJMS\SQLEXPRESS;
+Server=<your-sql-server>;
 Database=ProjectM;
-User Id=florence;
-Password=120911;
+User Id=<db-user>;
+Password=<db-password>;
 TrustServerCertificate=True;
 Encrypt=True;
 MultipleActiveResultSets=True;
@@ -62,7 +62,7 @@ MultipleActiveResultSets=True;
 1. Verify SQL Server is running: `Get-Service MSSQL*`
 2. Test connection manually via SQL Server Management Studio (SSMS)
 3. Verify database "ProjectM" exists
-4. Check user "florence" has access to the database
+4. Check the database user has access to the database
 5. Consider using Windows Authentication instead: `Integrated Security=True;`
 
 ---
@@ -131,7 +131,7 @@ app.UseAuthorization();   // Must come after authentication
 **Return Format:**
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token": "<jwt>",
   "user": { "id": 1, "name": "...", "email": "...", "role": "..." },
   "expiresAt": "2026-08-23T15:00:00Z"
 }
@@ -249,7 +249,7 @@ Content-Type: application/json
 **Expected Response:** 200 OK
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwidW5pcXVlX25hbWUiOiJUZXN0IFVzZXIiLCJyb2xlIjoiQ2xpZW50IiwianRpIjoiNGY1ZjJhODgtNmM3Yi00ZGMxLWI4YjUtODNkOGUyMzgxZjI1IiwibmJmIjoxNzI0MzQwMDAwLCJleHAiOjE3MjQ0MjY0MDAsImlhdCI6MTcyNDM0MDAwMCwiaXNzIjoiUHJvamVjdE0iLCJhdWQiOiJQcm9qZWN0TUNsaWVudCJ9.signature",
+  "token": "<jwt>",
   "user": {
 	"id": 1,
 	"name": "Test User",
