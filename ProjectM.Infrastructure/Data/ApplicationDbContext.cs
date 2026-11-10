@@ -192,6 +192,17 @@ namespace ProjectM.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(rt => rt.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Money columns: state the precision explicitly (it matches the decimal(18,2) the database
+            // already uses, so this needs no migration) instead of relying on EF's silent default.
+            modelBuilder.Entity<PFI>().Property(p => p.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<PFI>().Property(p => p.Tax).HasPrecision(18, 2);
+            modelBuilder.Entity<PFI>().Property(p => p.TotalAmount).HasPrecision(18, 2);
+            modelBuilder.Entity<PFILineItem>().Property(li => li.UnitPrice).HasPrecision(18, 2);
+            modelBuilder.Entity<PFILineItem>().Property(li => li.TotalPrice).HasPrecision(18, 2);
+            modelBuilder.Entity<Repair>().Property(r => r.CostEstimate).HasPrecision(18, 2);
+            modelBuilder.Entity<Repair>().Property(r => r.ActualCost).HasPrecision(18, 2);
+            modelBuilder.Entity<SLA>().Property(s => s.ContractValue).HasPrecision(18, 2);
         }
     }
 }

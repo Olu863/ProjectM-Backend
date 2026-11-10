@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectM.API.Authorization;
 using ProjectM.Services.DTOs;
 using ProjectM.Services.Interfaces;
 
@@ -29,7 +30,7 @@ namespace ProjectM.API.Controllers
         public async Task<IActionResult> GetClientCompany(int id)
         {
             var company = await _clientCompanyService.GetClientCompanyByIdAsync(id);
-            if (company == null)
+            if (company == null || (!User.IsStaff() && company.UserId != User.GetUserId()))
                 return NotFound();
 
             return Ok(company);
@@ -38,6 +39,9 @@ namespace ProjectM.API.Controllers
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetClientCompanyByUser(int userId)
         {
+            if (!User.IsStaff() && userId != User.GetUserId())
+                return Forbid();
+
             var company = await _clientCompanyService.GetClientCompanyByUserIdAsync(userId);
             if (company == null)
                 return NotFound();
@@ -58,12 +62,23 @@ namespace ProjectM.API.Controllers
         public async Task<IActionResult> CreateClientCompany([FromBody] CreateClientCompanyDto createClientCompanyDto)
         {
             var company = await _clientCompanyService.CreateClientCompanyAsync(createClientCompanyDto);
+            if (company == null)
+                return BadRequest(new { message = "Unable to create client company." });
+
             return CreatedAtAction(nameof(GetClientCompany), new { id = company.Id }, company);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateClientCompany(int id, [FromBody] UpdateClientCompanyDto updateClientCompanyDto)
         {
+            // Staff can edit any company; a client only their own.
+            var existing = await _clientCompanyService.GetClientCompanyByIdAsync(id);
+            if (existing == null)
+                return NotFound();
+
+            if (!User.IsStaff() && existing.UserId != User.GetUserId())
+                return Forbid();
+
             var company = await _clientCompanyService.UpdateClientCompanyAsync(id, updateClientCompanyDto);
             if (company == null)
                 return NotFound();

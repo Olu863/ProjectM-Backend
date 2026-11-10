@@ -17,8 +17,6 @@
       "applicationUrl": "http://localhost:5144",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__DefaultConnection": "Server=DESKTOP-HGDPJMS\\SQLEXPRESS;Database=ProjectM.db;User Id=florence;Password=120911;TrustServerCertificate=True;Encrypt=True;MultipleActiveResultSets=True;",
-        "Jwt__Key": "RKdLvKv2+ZCncjHxZ4PPU1oZwJjEzYSn6nBO0DhQvEZJQzgoS2hEPvE53lxqeOvzhzFpq/BH0D4QZCrSmYK0Nw==",
         "Jwt__Issuer": "ProjectM",
         "Jwt__Audience": "ProjectMClient",
         "Jwt__ExpiryInMinutes": "15",
@@ -33,8 +31,6 @@
       "applicationUrl": "https://localhost:7008;http://localhost:5144",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__DefaultConnection": "Server=DESKTOP-HGDPJMS\\SQLEXPRESS;Database=ProjectM.db;User Id=florence;Password=120911;TrustServerCertificate=True;Encrypt=True;MultipleActiveResultSets=True;",
-        "Jwt__Key": "RKdLvKv2+ZCncjHxZ4PPU1oZwJjEzYSn6nBO0DhQvEZJQzgoS2hEPvE53lxqeOvzhzFpq/BH0D4QZCrSmYK0Nw==",
         "Jwt__Issuer": "ProjectM",
         "Jwt__Audience": "ProjectMClient",
         "Jwt__ExpiryInMinutes": "15",

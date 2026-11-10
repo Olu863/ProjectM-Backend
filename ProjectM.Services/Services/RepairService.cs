@@ -83,18 +83,23 @@ namespace ProjectM.Services.Services
 
         public async Task<RepairDto> CreateRepairAsync(CreateRepairDto createRepairDto, int createdBy)
         {
+            // Report a missing client as a clear validation error instead of a database foreign-key failure (HTTP 500).
+            if (!await _context.Users.AnyAsync(u => u.Id == createRepairDto.ClientId))
+                return null;
+
             var repair = new Repair
             {
                 ClientId = createRepairDto.ClientId,
-                EquipmentName = createRepairDto.EquipmentName,
-                EquipmentSerial = createRepairDto.EquipmentSerial,
-                IssueDescription = createRepairDto.IssueDescription,
-                Priority = createRepairDto.Priority,
+                EquipmentName = createRepairDto.EquipmentName ?? "",
+                EquipmentSerial = createRepairDto.EquipmentSerial ?? "",   // NOT NULL in the database
+                IssueDescription = createRepairDto.IssueDescription ?? "",
+                Priority = string.IsNullOrWhiteSpace(createRepairDto.Priority) ? "Normal" : createRepairDto.Priority,
+                PFIUrl = "",                                              // NOT NULL in the database
                 Status = "Requested",
                 CostEstimate = createRepairDto.CostEstimate,
                 DowntimeProjection = createRepairDto.DowntimeProjection,
                 EstimatedCompletionDate = createRepairDto.EstimatedCompletionDate,
-                Notes = createRepairDto.Notes,
+                Notes = createRepairDto.Notes ?? "",                      // NOT NULL in the database
                 CreatedBy = createdBy,
                 CreatedAt = DateTime.UtcNow
             };

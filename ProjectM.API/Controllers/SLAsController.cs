@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectM.API.Authorization;
 using ProjectM.Services.DTOs;
 using ProjectM.Services.Interfaces;
 using System.Security.Claims;
@@ -21,7 +22,10 @@ namespace ProjectM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSLAs()
         {
-            var slas = await _slaService.GetAllSLAsAsync();
+            // Clients only see their own SLAs; staff see everything.
+            var slas = User.IsStaff()
+                ? await _slaService.GetAllSLAsAsync()
+                : await _slaService.GetSLAsByClientAsync(User.GetUserId());
             return Ok(slas);
         }
 
@@ -29,7 +33,7 @@ namespace ProjectM.API.Controllers
         public async Task<IActionResult> GetSLA(int id)
         {
             var sla = await _slaService.GetSLAByIdAsync(id);
-            if (sla == null)
+            if (sla == null || (!User.IsStaff() && sla.ClientId != User.GetUserId()))
                 return NotFound();
 
             return Ok(sla);
@@ -38,11 +42,15 @@ namespace ProjectM.API.Controllers
         [HttpGet("client/{clientId}")]
         public async Task<IActionResult> GetSLAsByClient(int clientId)
         {
+            if (!User.IsStaff() && clientId != User.GetUserId())
+                return Forbid();
+
             var slas = await _slaService.GetSLAsByClientAsync(clientId);
             return Ok(slas);
         }
 
         [HttpGet("status/{status}")]
+        [Authorize(Roles = AppRoles.Staff)]
         public async Task<IActionResult> GetSLAsByStatus(string status)
         {
             var slas = await _slaService.GetSLAsByStatusAsync(status);
@@ -53,8 +61,14 @@ namespace ProjectM.API.Controllers
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateSLA([FromBody] CreateSLADto createSLADto)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var userId = User.GetUserId();
+            if (userId == 0)
+                return Unauthorized();
+
             var sla = await _slaService.CreateSLAAsync(createSLADto, userId);
+            if (sla == null)
+                return BadRequest(new { message = "Unable to create SLA." });
+
             return CreatedAtAction(nameof(GetSLA), new { id = sla.Id }, sla);
         }
 

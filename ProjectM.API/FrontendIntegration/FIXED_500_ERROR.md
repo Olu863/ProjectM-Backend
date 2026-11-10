@@ -25,7 +25,7 @@ This threw a `NullReferenceException`, causing the 500 error.
 ### 1. **Added JWT Key to appsettings.json**
 ```json
 "Jwt": {
-  "Key": "RKdLvKv2+ZCncjHxZ4PPU1oZwJjEzYSn6nBO0DhQvEZJQzgoS2hEPvE53lxqeOvzhzFpq/BH0D4QZCrSmYK0Nw==",
+  "Key": "<set via user-secrets / environment variable - never commit>",
   "Issuer": "ProjectM",
   "Audience": "ProjectMClient",
   "ExpiryInMinutes": 15,

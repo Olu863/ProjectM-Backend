@@ -58,11 +58,19 @@ namespace ProjectM.Services.Services
 
         public async Task<NotificationDto> CreateNotificationAsync(CreateNotificationDto createNotificationDto)
         {
+            if (!await _context.Users.AnyAsync(u => u.Id == createNotificationDto.UserId))
+                return null;
+
             var notification = new Notification
             {
                 UserId = createNotificationDto.UserId,
-                Type = createNotificationDto.Type,
-                Message = createNotificationDto.Message,
+                Type = createNotificationDto.Type ?? "General",
+                // Title, RelatedEntityType and ActionUrl are NOT NULL in the database but were never filled in,
+                // so every notification insert failed.
+                Title = createNotificationDto.Title ?? createNotificationDto.Type ?? "Notification",
+                Message = createNotificationDto.Message ?? "",
+                RelatedEntityType = "",
+                ActionUrl = "",
                 IsRead = false,
                 CreatedAt = DateTime.UtcNow
             };

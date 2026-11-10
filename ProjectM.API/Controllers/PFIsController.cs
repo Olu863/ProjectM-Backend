@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectM.API.Authorization;
 using ProjectM.Services.DTOs;
 using ProjectM.Services.Interfaces;
 using System.Security.Claims;
@@ -12,10 +13,22 @@ namespace ProjectM.API.Controllers
     public class PFIsController : ControllerBase
     {
         private readonly IPFIService _pfiService;
+        private readonly IRepairService _repairService;
 
-        public PFIsController(IPFIService pfiService)
+        public PFIsController(IPFIService pfiService, IRepairService repairService)
         {
             _pfiService = pfiService;
+            _repairService = repairService;
+        }
+
+        // Staff can see every PFI; a client only the PFIs that belong to their own repairs.
+        private async Task<bool> CanAccessRepairAsync(int repairId)
+        {
+            if (User.IsStaff())
+                return true;
+
+            var repair = await _repairService.GetRepairByIdAsync(repairId);
+            return repair != null && repair.ClientId == User.GetUserId();
         }
 
         [HttpGet]
@@ -30,7 +43,7 @@ namespace ProjectM.API.Controllers
         public async Task<IActionResult> GetPFI(int id)
         {
             var pfi = await _pfiService.GetPFIByIdAsync(id);
-            if (pfi == null)
+            if (pfi == null || !await CanAccessRepairAsync(pfi.RepairId))
                 return NotFound();
 
             return Ok(pfi);
@@ -39,6 +52,9 @@ namespace ProjectM.API.Controllers
         [HttpGet("repair/{repairId}")]
         public async Task<IActionResult> GetPFIsByRepair(int repairId)
         {
+            if (!await CanAccessRepairAsync(repairId))
+                return NotFound();
+
             var pfis = await _pfiService.GetPFIsByRepairAsync(repairId);
             return Ok(pfis);
         }
@@ -56,6 +72,9 @@ namespace ProjectM.API.Controllers
         public async Task<IActionResult> CreatePFI([FromBody] CreatePFIDto createPFIDto)
         {
             var pfi = await _pfiService.CreatePFIAsync(createPFIDto);
+            if (pfi == null)
+                return BadRequest(new { message = "Unable to create PFI." });
+
             return CreatedAtAction(nameof(GetPFI), new { id = pfi.Id }, pfi);
         }
 
@@ -74,7 +93,7 @@ namespace ProjectM.API.Controllers
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> ApprovePFI(int id)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var userId = User.GetUserId();
             var result = await _pfiService.ApprovePFIAsync(id, userId);
             if (!result)
                 return NotFound();
